@@ -1,7 +1,35 @@
-- name: Guardar HTML de depuración
-  if: always()
-  uses: actions/upload-artifact@v4
-  with:
-    name: losilla-debug
-    path: losilla_debug.html
-    if-no-files-found: ignore
+name: Informe Quiniela H2H
+
+on:
+  schedule:
+    - cron: '0 8 * * 1,5'
+  workflow_dispatch:
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Ver que hay en el repo
+        run: ls -R
+        
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Instalar deps
+        run: pip install -r requirements.txt
+        
+      - name: Generar informe
+        run: python3 generate_report.py
+        
+      - name: Commit informe
+        run: |
+          git config user.name "quiniela-bot"
+          git config user.email "bot@quiniela.local"
+          git add informes/
+          git diff --staged --quiet || git commit -m "Informe H2H $(date +%Y-%m-%d)"
+          git push
