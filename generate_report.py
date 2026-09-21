@@ -116,13 +116,17 @@ def _normalizar_partidos(partidos):
         resultado.append(partido)
     return resultado
 
-
 def obtener_proxima_quiniela():
     respuesta = SESSION.get(LOSILLA_URL, timeout=25)
     respuesta.raise_for_status()
+
+    Path("losilla_debug.html").write_text(
+        respuesta.text,
+        encoding="utf-8",
+    )
+
     return extraer_partidos_quiniela_html(respuesta.text)
-
-
+    
 def _fuente_font():
     """Devuelve una fuente con soporte para tildes en GitHub Actions/Linux."""
     for ruta in (
@@ -202,4 +206,7 @@ if __name__ == "__main__":
         print(f"Error: {error}")
         raise SystemExit(1)
         
-
+print("HTTP:", respuesta.status_code)
+print("URL final:", respuesta.url)
+print("Tamaño HTML:", len(respuesta.text))
+print(respuesta.text[:1000])
