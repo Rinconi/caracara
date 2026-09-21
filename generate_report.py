@@ -192,11 +192,14 @@ def main():
     for partido in partidos:
         print(f"{partido['numero']}. {partido['local']} vs {partido['visitante']}")
 
-
 if __name__ == "__main__":
     try:
         main()
     except requests.RequestException as error:
         print(f"Error al consultar Eduardo Losilla: {error}")
+        raise SystemExit(1)
     except Exception as error:
         print(f"Error: {error}")
+        raise SystemExit(1)
+        
+
