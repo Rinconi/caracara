@@ -74,10 +74,14 @@ H2H = {
     "Deportivo La Coruna (F) - Espanyol (F)": [
         {"fecha": "02/02/2025", "comp": "Liga F", "local": "Espanyol (F)", "visitante": "Depor (F)", "res": "2-0"},
     ],
-    "Inglaterra - Espana": [
-        {"fecha": "27/07/2025", "comp": "Euro F", "local": "Inglaterra", "visitante": "Espana", "res": "1-1"},
-        {"fecha": "20/08/2023", "comp": "Mundial F", "local": "Espana", "visitante": "Inglaterra", "res": "1-0"},
+     "Inglaterra - Espana": [
+        {"fecha": "14/07/2024", "comp": "Euro", "local": "Espana", "visitante": "Inglaterra", "res": "2-1"},
+        {"fecha": "15/10/2018", "comp": "Nations", "local": "Espana", "visitante": "Inglaterra", "res": "2-3"},
+        {"fecha": "08/09/2018", "comp": "Nations", "local": "Inglaterra", "visitante": "Espana", "res": "1-2"},
+        {"fecha": "12/11/2011", "comp": "Amistoso", "local": "Inglaterra", "visitante": "Espana", "res": "1-0"},
+        {"fecha": "02/07/1996", "comp": "Euro", "local": "Inglaterra", "visitante": "Espana", "res": "0-0 (4-2 p)"},
     ],
+
 }
 
 def generar():
@@ -87,48 +91,55 @@ def generar():
 
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
-
+    
+    #titulo de quiniela
     pdf.add_page()
     pdf.set_font("Helvetica","B",14)
     pdf.cell(0,10,f"QUINIELA Jornada 9 - {fecha}", ln=True, align='C')
     pdf.ln(2)
-    pdf.set_font("Helvetica","B",10)
-    pdf.cell(10,8,"N",1,0,'C')
-    pdf.cell(80,8,"LOCAL",1,0,'C')
-    pdf.cell(80,8,"VISITANTE",1,1,'C')
-    pdf.set_font("Helvetica","",10)
+    
+    #cabecera de la tabla quiniela
+    pdf.set_font("Helvetica","B",16)
+    pdf.set_fill_color(0,0,0) #fondo negro
+    pdf.set_text_color(255,255,255) #texto blanco
+    pdf.cell(10,8,"N",1,0,'C', True)
+    pdf.cell(80,8,"LOCAL",1,0,'C', True)
+    pdf.cell(80,8,"VISITANTE",1,1,'C', True)
+    #resto de la lista
+    pdf.set_text_color(0,0,0)#volvemos a texto negro para el resto
+    pdf.set_font("Helvetica","",14)
     for i,(l,v) in enumerate(partidos,1):
         pdf.cell(10,8,str(i),1,0,'C')
         pdf.cell(80,8,l,1,0,'C')
         pdf.cell(80,8,v,1,1,'C')
-
+    #pagina 2 Historiales cara a cara
     pdf.add_page()
-    pdf.set_font("Helvetica","B",13)
+    pdf.set_font("Helvetica","B",14)
     pdf.cell(0,10,"HISTORIALES H2H - Jornada 9", ln=True, align='C')
     pdf.ln(3)
 
     for titulo, datos in H2H.items():
         if pdf.get_y() > 235:
             pdf.add_page()
-        pdf.set_font("Helvetica","B",10)
-        pdf.set_fill_color(230,230,230)
-        pdf.cell(0,7,f" {titulo} ({len(datos)} PJ)",1,1,'L',True)
-        pdf.set_font("Helvetica","B",7)
-        pdf.set_fill_color(30,30,30)
-        pdf.set_text_color(255,255,255)
-        pdf.cell(20,6,"FECHA",1,0,'C',True)
-        pdf.cell(22,6,"COMP",1,0,'C',True)
-        pdf.cell(52,6,"LOCAL",1,0,'C',True)
-        pdf.cell(52,6,"VISITANTE",1,0,'C',True)
-        pdf.cell(24,6,"RES",1,1,'C',True)
+        pdf.set_font("Helvetica","B",16)
+        pdf.set_fill_color(200,200,200)
+        pdf.cell(0,8,f" {titulo} ({len(datos)} PJ)",1,1,'C',True)
+        pdf.set_font("Helvetica","B",12)
+        pdf.set_fill_color(30,30,30)#fondo negro
+        pdf.set_text_color(255,255,255)#texto blanco
+        pdf.cell(22,7,"FECHA",1,0,'C',True)
+        pdf.cell(24,7,"COMP",1,0,'C',True)
+        pdf.cell(52,7,"LOCAL",1,0,'C',True)
+        pdf.cell(52,7,"VISITANTE",1,0,'C',True)
+        pdf.cell(24,7,"RES",1,1,'C',True)
         pdf.set_text_color(0,0,0)
-        pdf.set_font("Helvetica","",7)
+        pdf.set_font("Helvetica","",10)
         for p in datos:
-            pdf.cell(20,5,p["fecha"],1,0,'C')
-            pdf.cell(22,5,p["comp"],1,0,'C')
-            pdf.cell(52,5,p["local"],1,0,'C')
-            pdf.cell(52,5,p["visitante"],1,0,'C')
-            pdf.cell(24,5,p["res"],1,1,'C')
+            pdf.cell(22,7,p["fecha"],1,0,'C')
+            pdf.cell(24,7,p["comp"],1,0,'C')
+            pdf.cell(52,7,p["local"],1,0,'C')
+            pdf.cell(52,7,p["visitante"],1,0,'C')
+            pdf.cell(24,7,p["res"],1,1,'C')
         pdf.ln(4)
 
     out = f"informes/informe_{fecha}.pdf"
