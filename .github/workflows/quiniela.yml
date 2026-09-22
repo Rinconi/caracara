@@ -1,4 +1,4 @@
-name: Informe Quiniela H2H Lunes Telegram
+name: Informe Quiniela H2H # Lunes Telegram
 
 on:
   schedule:
