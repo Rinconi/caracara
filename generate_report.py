@@ -133,7 +133,7 @@ def generar():
         pdf.cell(54,7,"VISITANTE",1,0,'C',True)
         pdf.cell(24,7,"RES",1,1,'C',True)
         pdf.set_text_color(0,0,0)
-        pdf.set_font("Helvetica","",10)
+        pdf.set_font("Helvetica","",12)
         for p in datos:
             pdf.cell(22,7,p["fecha"],1,0,'C')
             pdf.cell(30,7,p["comp"],1,0,'C')
