@@ -1,35 +1,37 @@
-name: Informe Quiniela H2H
+name: Informe Quiniela H2H Lunes Telegram
 
 on:
   schedule:
-    - cron: '0 8 * * 1,5'
-  workflow_dispatch:
+    - cron: '0 8 0 * 1' #todos los lunes a las 09:00 hora españa 07:00UTC
+  workflow_dispatch: #para que puedas lanzarlo a mano desde github 
 
 jobs:
-  generar:
+  generar_y_enviar:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    #permissions:
+    #  contents: write
     steps:
       - uses: actions/checkout@v4
       
-      - name: Ver que hay en el repo
-        run: ls -R
-        
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
-      - name: Instalar deps
-        run: pip install -r requirements.txt
+      - name: Instalar dependencias
+        run: pip install fpdf2 requests
         
-      - name: Generar informe
-        run: python3 generate_report.py
+      - name: Generar PDF
+        run: python generate_report.py
         
-      - name: Commit informe
+      - name: Enviar a Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{secrets.TELEGRAM_CHAT_ID }}
         run: |
-          git config user.name "quiniela-bot"
-          git config user.email "bot@quiniela.local"
-          git add informes/
-          git diff --staged --quiet || git commit -m "Informe H2H $(date +%Y-%m-%d)"
-          git push
+          FILE=$(ls -t informes/*.pdf | head -n 1)
+          curl -s -X POST "https://api.telegram.org/bos${BOT_TOKEN}/sendDocument" \
+            -F chat_id="${CHAT_ID}" \
+            -F document=@"${FILE}" \
+            -F caption="Quiniela Jornada 9 H2H $(date +%Y-%m-%d)"
+            
+          
