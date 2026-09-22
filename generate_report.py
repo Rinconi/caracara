@@ -128,7 +128,7 @@ def generar():
         pdf.set_fill_color(30,30,30)#fondo negro
         pdf.set_text_color(255,255,255)#texto blanco
         pdf.cell(22,7,"FECHA",1,0,'C',True)
-        pdf.cell(24,7,"COMP",1,0,'C',True)
+        pdf.cell(28,7,"COMP",1,0,'C',True)
         pdf.cell(52,7,"LOCAL",1,0,'C',True)
         pdf.cell(52,7,"VISITANTE",1,0,'C',True)
         pdf.cell(24,7,"RES",1,1,'C',True)
