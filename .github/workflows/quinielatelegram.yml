@@ -1,4 +1,4 @@
-name: 2  - Enviar Telegram lunes
+name: Enviar Telegram lunes
 
 on:
   schedule:
