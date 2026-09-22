@@ -1,4 +1,4 @@
-name: Informe Quiniela H2H # Lunes Telegram
+name: 2  - Enviar Telegram lunes
 
 on:
   schedule:
@@ -6,23 +6,17 @@ on:
   workflow_dispatch: #para que puedas lanzarlo a mano desde github 
 
 jobs:
-  generar_y_enviar:
+  send:
     runs-on: ubuntu-latest
     #permissions:
     #  contents: write
     steps:
       - uses: actions/checkout@v4
-      
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          
-      - name: Instalar dependencias
-        run: pip install fpdf2 requests
-        
-      - name: Generar PDF
-        run: python generate_report.py
-        
+      - run: pip install fpdf2 requests
+      - run: python generate_report.py
       - name: Enviar a Telegram
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -32,6 +26,6 @@ jobs:
           curl -s -X POST "https://api.telegram.org/bos${BOT_TOKEN}/sendDocument" \
             -F chat_id="${CHAT_ID}" \
             -F document=@"${FILE}" \
-            -F caption="Quiniela Jornada 9 H2H $(date +%Y-%m-%d)"
+            -F caption="Quiniela - $(date +%Y-%m-%d)"
             
           
