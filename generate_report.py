@@ -128,17 +128,17 @@ def generar():
         pdf.set_fill_color(30,30,30)#fondo negro
         pdf.set_text_color(255,255,255)#texto blanco
         pdf.cell(22,7,"FECHA",1,0,'C',True)
-        pdf.cell(28,7,"COMP",1,0,'C',True)
-        pdf.cell(52,7,"LOCAL",1,0,'C',True)
-        pdf.cell(52,7,"VISITANTE",1,0,'C',True)
+        pdf.cell(30,7,"COMP",1,0,'C',True)
+        pdf.cell(54,7,"LOCAL",1,0,'C',True)
+        pdf.cell(54,7,"VISITANTE",1,0,'C',True)
         pdf.cell(24,7,"RES",1,1,'C',True)
         pdf.set_text_color(0,0,0)
         pdf.set_font("Helvetica","",10)
         for p in datos:
             pdf.cell(22,7,p["fecha"],1,0,'C')
-            pdf.cell(24,7,p["comp"],1,0,'C')
-            pdf.cell(52,7,p["local"],1,0,'C')
-            pdf.cell(52,7,p["visitante"],1,0,'C')
+            pdf.cell(30,7,p["comp"],1,0,'C')
+            pdf.cell(54,7,p["local"],1,0,'C')
+            pdf.cell(54,7,p["visitante"],1,0,'C')
             pdf.cell(24,7,p["res"],1,1,'C')
         pdf.ln(4)
 
